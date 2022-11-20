@@ -18,11 +18,15 @@ const Card = () => {
     const [sales, setSales] = useState<Sale[]>([])
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/sales`)
+
+        const dmin = minDate.toISOString().slice(0, 10); // para tranformar a data para o formato 'xxxx-xx-xx'
+        const dmax = maxDate.toISOString().slice(0, 10);
+
+        axios.get(`${BASE_URL}/sales?minDate=${dmin}&maxDate=${dmax}`)
             .then(response => {
                 setSales(response.data.content)
             }) // axios é uma requisição, e ela esta buscando a partir desse link as vendas do banco de dados
-    }, [])
+    }, [minDate, maxDate]) // colocamos dentro do array o minDate e o maxDate para que quando houver mudanças nas datas ele refazer o useEffect dnv
 
     return (
         <div className="dsmeta-card">
